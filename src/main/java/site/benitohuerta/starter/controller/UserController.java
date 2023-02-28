@@ -21,12 +21,6 @@ import java.util.List;
 @RequestMapping("users")
 public class UserController {
 
-    @GetMapping("/")
-    public String home()
-    {
-        return "admin/users/index";
-    }
-
     @Autowired
     private UserService userService;
 
