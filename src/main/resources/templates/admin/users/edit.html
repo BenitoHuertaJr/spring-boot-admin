@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin-layout}"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+  <title>Update user</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+  <section class="my-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>Update client</h3>
+        </div>
+        <div class="col-md-12">
+          <p th:if="${error != null && error != ''}" th:text="${error}" class="alert alert-danger"></p>
+          <form th:object="${user}" th:action="@{/users/{id}(id=${user.id})}" th:method="put">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input th:field="*{name}" type="text" class="form-control" id="name" placeholder="Enter the name">
+              <span th:if="${#fields.hasErrors('name')}" class="error-field" th:errors="*{name}">Name Error</span>
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input th:field="*{email}" type="text" class="form-control" id="email" placeholder="Enter the email">
+              <span th:if="${#fields.hasErrors('email')}" class="error-field" th:errors="*{email}">Email Error</span>
+            </div>
+            <div class="form-group">
+              <label for="active">Active</label>
+              <select th:field="*{active}" class="form-control" id="active" placholder="Select an option">
+                <option value="true">Active</option>
+                <option value="false">Inactive</option>
+              </select>
+              <span th:if="${#fields.hasErrors('active')}" class="error-field" th:errors="*{active}">Active Error</span>
+            </div>
+            <div class="form-group">
+              <label for="roles">Roles</label>
+              <select th:field="*{roles}"  class="form-control" id="roles" multiple>
+                <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.name}"></option>
+              </select>
+              <span th:if="${#fields.hasErrors('roles')}" class="error-field" th:errors="*{roles}">Roles Error</span>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <a th:href="@{/users}" class="btn btn-danger btm-sm">Back</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+</body>
+</html>

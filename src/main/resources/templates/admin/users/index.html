@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin-layout}"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+  <title>Users</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+  <section class="my-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            Clients
+            <a th:href="@{/users/create}" class="btn btn-primary btm-sm float-right">New</a>
+          </h3>
+        </div>
+        <div class="col-md-12">
+          <p th:if="${error != null && error != ''}" th:text="${error}" class="alert alert-danger"></p>
+          <p th:if="${message != null && message != ''}" th:text="${message}" class="alert alert-info"></p>
+          <table class="table table-bordered">
+            <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Email</th>
+              <th scope="col">Roles</th>
+              <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+              <th scope="row" th:text="${user.id}"></th>
+              <td th:text="${user.name}"></td>
+              <td th:text="${user.email}"></td>
+              <td>
+                <ul>
+                  <li th:each="role : ${user.roles}">
+                    <span th:text="${role.name}"></span>
+                  </li>
+                </ul>
+              </td>
+              <td>
+                <a th:href="@{/users/{id}(id=${user.id})}" class="btn btn-info btm-sm float-right">Show</a>
+                <a th:href="@{/users/{id}/edit(id=${user.id})}" class="btn btn-warning btm-sm float-right mr-2">Edit</a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+</body>
+</html>

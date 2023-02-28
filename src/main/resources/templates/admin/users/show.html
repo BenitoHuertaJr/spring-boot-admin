@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin-layout}"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+  <title>User Information</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+  <section class="my-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            User Information
+            <a th:href="@{/users}" class="btn btn-primary btm-sm float-right">Back</a>
+          </h3>
+        </div>
+        <div class="col-md-12">
+          <form th:object="${user}">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input th:field="*{name}" type="text" class="form-control" id="name" placeholder="Enter the name" disabled>
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input th:field="*{email}" type="text" class="form-control" id="email" placeholder="Enter the email" disabled>
+            </div>
+            <div class="form-group">
+              <label for="active">Active</label>
+              <select th:field="*{active}" class="form-control" id="active" placholder="Select an option" disabled>
+                <option value="true">Active</option>
+                <option value="false">Inactive</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="roles">Roles</label>
+              <select th:field="*{roles}"  class="form-control" id="roles" multiple disabled>
+                <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.name}"></option>
+              </select>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+</body>
+</html>
