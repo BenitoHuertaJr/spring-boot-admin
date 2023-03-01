@@ -14,7 +14,7 @@
 	<name>Starter App</name>
 	<description>This is a starter app based on roles</description>
 	<properties>
-		<java.version>17</java.version>
+		<java.version>11</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
