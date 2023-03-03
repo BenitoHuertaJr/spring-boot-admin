@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
+import org.springframework.web.multipart.MultipartFile;
 import site.benitohuerta.starter.entity.Entry;
 import site.benitohuerta.starter.service.EntryService;
 import site.benitohuerta.starter.utils.Slug;
@@ -34,5 +35,20 @@ public class EntryValidator implements Validator {
             }
         }
 
+    }
+
+    public void validateFile(MultipartFile file, Errors errors) {
+
+        if(file.isEmpty() || file.getSize() == 0) {
+            errors.rejectValue("file", "NotEmpty");
+        }
+
+        String type = file.getContentType().toLowerCase();
+
+        if(type.equals("image/jpg") || type.equals("image/jpeg") || type.equals("image/png")) {
+            // TODO
+        } else {
+            errors.rejectValue("file", "NoImage");
+        }
     }
 }

@@ -6,9 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import site.benitohuerta.starter.entity.Entry;
 import site.benitohuerta.starter.entity.User;
+import site.benitohuerta.starter.service.EntryService;
 import site.benitohuerta.starter.service.UserService;
 import site.benitohuerta.starter.validator.UserRegistrationValidator;
+
+import java.util.List;
 
 @Controller
 public class MainController {
@@ -17,12 +21,27 @@ public class MainController {
     private UserService userService;
 
     @Autowired
+    private EntryService entryService;
+
+    @Autowired
     private UserRegistrationValidator userRegistrationValidator;
 
     @GetMapping({"/", "/welcome"})
-    public String index()
+    public String index(Model model)
     {
+        List<Entry> entries = entryService.findAll();
+        model.addAttribute("entries", entries);
+
         return "index";
+    }
+
+    @GetMapping("blog/{slug}")
+    public String show(@PathVariable(value = "slug") String slug, Model model)
+    {
+        Entry entry = entryService.getEntryBySlug(slug);
+        model.addAttribute("entry", entry);
+
+        return "blog/show";
     }
 
     @GetMapping("/signup")

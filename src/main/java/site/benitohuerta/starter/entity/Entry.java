@@ -1,5 +1,7 @@
 package site.benitohuerta.starter.entity;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.persistence.*;
 
 @Entity
@@ -22,6 +24,9 @@ public class Entry {
     private String shortDescription;
 
     private String image;
+
+    @Transient
+    private MultipartFile file;
 
     public Integer getId() {
         return id;
@@ -69,5 +74,13 @@ public class Entry {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
     }
 }

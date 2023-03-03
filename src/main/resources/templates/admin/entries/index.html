@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin-layout}"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+  <title>Entries</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+  <section class="my-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>
+            Entries
+            <a th:href="@{/entries/create}" class="btn btn-primary btm-sm float-right">New</a>
+          </h3>
+        </div>
+        <div class="col-md-12">
+          <p th:if="${error != null && error != ''}" th:text="${error}" class="alert alert-danger"></p>
+          <p th:if="${message != null && message != ''}" th:text="${message}" class="alert alert-info"></p>
+          <table class="table table-bordered">
+            <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Imagen</th>
+              <th scope="col">Name</th>
+              <th scope="col">Content</th>
+              <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="entry : ${entries}">
+              <th scope="row" th:text="${entry.id}"></th>
+              <td>
+                <img th:src="@{/uploads/entries/{image}(image=${entry.image})}" style="width: 100px;"/>
+              </td>
+              <td th:text="${entry.name}"></td>
+              <td th:text="${entry.shortDescription}"></td>
+              <td>
+                <a th:href="@{/entries/{id}(id=${entry.id})}" class="btn btn-info btm-sm float-right">Show</a>
+                <a th:href="@{/entries/{id}/edit(id=${entry.id})}" class="btn btn-warning btm-sm float-right mr-2">Edit</a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+</body>
+</html>

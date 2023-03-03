@@ -57,16 +57,17 @@ public class EntryController {
     }
 
     @PostMapping("")
-    public String store(@ModelAttribute Entry entry, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes, BindingResult bindingResult)
+    public String store(@ModelAttribute Entry entry, @RequestParam MultipartFile file, RedirectAttributes redirectAttributes, BindingResult bindingResult)
     {
         entryValidator.validate(entry, bindingResult);
+        entryValidator.validateFile(file, bindingResult);
 
         if (bindingResult.hasErrors()) {
             return "admin/entries/create";
         }
 
         try {
-            storageService.save(file);
+            storageService.save(file, "entries");
             entry.setImage(file.getOriginalFilename());
             System.out.println(entry.getImage());
 
@@ -103,21 +104,22 @@ public class EntryController {
 
     @PutMapping("/{id}")
     public String update(@PathVariable(value = "id") Integer id, @ModelAttribute Entry entryDetails,
-                         @RequestParam MultipartFile image, RedirectAttributes redirectAttributes,
+                         @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes,
                          BindingResult bindingResult)
     {
         entryValidator.validate(entryDetails, bindingResult);
+        entryValidator.validateFile(file, bindingResult);
 
         if (bindingResult.hasErrors()) {
             return "admin/entries/edit";
         }
 
         try {
-            storageService.save(image);
-            entryDetails.setImage(image.getOriginalFilename());
+            storageService.save(file, "entries");
+            entryDetails.setImage(file.getOriginalFilename());
 
         } catch (Exception e) {
-            String error = "Could not upload the file: " + image.getOriginalFilename() + ". Error: " + e.getMessage();
+            String error = "Could not upload the file: " + file.getOriginalFilename() + ". Error: " + e.getMessage();
             redirectAttributes.addAttribute("error", error);
             return "admin/entries/edit";
         }
