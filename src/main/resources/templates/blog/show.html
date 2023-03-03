@@ -12,7 +12,8 @@
     <div class="container">
       <div class="row">
         <div class="col-md-4 col-sm-12">
-          <img th:src="@{/uploads/entries/{image}(image=${entry.image})}" class="img-fluid" />
+          <img th:src="@{/uploads/entries/{image}(image=${entry.image})}" class="img-fluid">
+          <p th:text="'Written by:' + ${entry.user.name}"></p>
         </div>
         <div class="col-md-8 col-sm-12">
           <h1 th:text="${entry.name}"></h1>

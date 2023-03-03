@@ -1,5 +1,8 @@
 package site.benitohuerta.starter.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
@@ -19,6 +22,7 @@ public class Entry {
     @Column(nullable = false, unique = true)
     private String slug;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String description;
 
     private String shortDescription;
@@ -27,6 +31,10 @@ public class Entry {
 
     @Transient
     private MultipartFile file;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     public Integer getId() {
         return id;
@@ -82,5 +90,13 @@ public class Entry {
 
     public void setFile(MultipartFile file) {
         this.file = file;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -41,6 +41,12 @@ public class UserRegistrationValidator implements Validator {
             errors.rejectValue("passwordConfirm", "Size");
         }
 
+        User alreadyRegisteredUserName = userService.getUserByName(user.getName());
+
+        if (alreadyRegisteredUserName != null) {
+            errors.rejectValue("name", "Duplicate");
+        }
+
         User alreadyRegisteredUser = userService.getUserByEmail(user.getEmail());
 
         if (alreadyRegisteredUser != null) {

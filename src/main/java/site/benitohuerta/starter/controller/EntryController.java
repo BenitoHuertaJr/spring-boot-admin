@@ -1,6 +1,8 @@
 package site.benitohuerta.starter.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -8,18 +10,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import site.benitohuerta.starter.entity.Entry;
-import site.benitohuerta.starter.entity.Role;
 import site.benitohuerta.starter.entity.User;
 import site.benitohuerta.starter.service.EntryService;
 import site.benitohuerta.starter.service.FilesStorageService;
-import site.benitohuerta.starter.service.RoleService;
 import site.benitohuerta.starter.service.UserService;
 import site.benitohuerta.starter.validator.EntryValidator;
-import site.benitohuerta.starter.validator.UserValidator;
-
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 @Controller
@@ -28,6 +24,9 @@ public class EntryController {
 
     @Autowired
     private EntryService entryService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private EntryValidator entryValidator;
@@ -67,17 +66,17 @@ public class EntryController {
         }
 
         try {
-            storageService.save(file, "entries");
-            entry.setImage(file.getOriginalFilename());
-            System.out.println(entry.getImage());
+
+            String fileName = storageService.save(file, "entries");
+            entry.setImage(fileName);
 
         } catch (Exception e) {
             String error = "Could not upload the file: " + file.getOriginalFilename() + ". Error: " + e.getMessage();
-            System.out.println(error);
             redirectAttributes.addAttribute("error", error);
             return "admin/entries/create";
         }
 
+        entry.setUser(userService.getAuthenticatedUser());
         entryService.save(entry);
         redirectAttributes.addAttribute("message", "New entry added!");
 
@@ -115,8 +114,8 @@ public class EntryController {
         }
 
         try {
-            storageService.save(file, "entries");
-            entryDetails.setImage(file.getOriginalFilename());
+            String fileName = storageService.save(file, "entries");
+            entryDetails.setImage(fileName);
 
         } catch (Exception e) {
             String error = "Could not upload the file: " + file.getOriginalFilename() + ". Error: " + e.getMessage();

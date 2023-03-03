@@ -12,7 +12,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column(nullable = false, unique = true)
@@ -22,6 +22,7 @@ public class User {
     private String password;
 
     @Column(nullable = true)
+    @Transient
     private String passwordConfirm;
 
     @Column(nullable = false)

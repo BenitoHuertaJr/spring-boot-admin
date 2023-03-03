@@ -11,7 +11,9 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import site.benitohuerta.starter.utils.RamdonString;
 
 @Service
 public class FilesStorageServiceImpl implements FilesStorageService {
@@ -28,9 +30,14 @@ public class FilesStorageServiceImpl implements FilesStorageService {
     }
 
     @Override
-    public void save(MultipartFile file, String path) {
+    public String save(MultipartFile file, String path) {
         try {
-            Files.copy(file.getInputStream(), this.root.resolve(path + "/" + file.getOriginalFilename()));
+
+            String fileName = this.generateFileName(file);
+            Files.copy(file.getInputStream(), this.root.resolve(path + "/" + fileName));
+
+            return fileName;
+
         } catch (Exception e) {
             if (e instanceof FileAlreadyExistsException) {
                 throw new RuntimeException("A file of that name already exists.");
@@ -61,6 +68,12 @@ public class FilesStorageServiceImpl implements FilesStorageService {
         FileSystemUtils.deleteRecursively(root.toFile());
     }
 
+
+    @Override
+    public void delete(String filename) throws IOException {
+        FileSystemUtils.deleteRecursively(this.root.resolve(filename));
+    }
+
     @Override
     public Stream<Path> loadAll() {
         try {
@@ -68,5 +81,12 @@ public class FilesStorageServiceImpl implements FilesStorageService {
         } catch (IOException e) {
             throw new RuntimeException("Could not load the files!");
         }
+    }
+
+    @Override
+    public String generateFileName(MultipartFile file) {
+        String extension = StringUtils.getFilenameExtension(file.getOriginalFilename());
+        String fileName = RamdonString.getAlphaNumericString(20) + "." + extension;
+        return fileName;
     }
 }
