@@ -6,36 +6,26 @@
 	<title>Home</title>
 </head>
 <body>
-
 <div layout:fragment="content">
-	<section class="my-5">
+	<div id="home" style="width: 100vw; height: 100vh;">
+		<div class="landing-text">
+			<h1>Benito's Blog</h1>
+			<h3>Welcome to my personal Blog</h3>
+		</div>
+	</div>
+	<div id="blog" class="padding">
 		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<section class="text-center">
-						<h4 class="mb-5"><strong>Latest posts</strong></h4>
-						<div class="row">
-							<div th:each="entry: ${entries}" class="col-lg-4 col-md-12 mb-4">
-								<div class="card">
-									<div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-										<img th:src="@{/uploads/entries/{image}(image=${entry.image})}" class="img-fluid" />
-										<a href="#!">
-											<div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-										</a>
-									</div>
-									<div class="card-body">
-										<h5 class="card-title" th:text="${entry.name}"></h5>
-										<p class="card-text" th:text="${entry.shortDescription}"></p>
-										<a th:href="@{/blog/{slug}(slug=${entry.slug})}" class="btn btn-primary">Read</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</section>
+			<div class="row mb-5">
+				<div th:each="entry: ${entries}" class="col-sm-6">
+					<h2 class="text-left" th:text="${entry.name}"></h2>
+					<img th:src="@{/uploads/entries/{image}(image=${entry.image})}" th:alt="${entry.name}" width="100%">
+					<br><br>
+					<p th:text="${entry.shortDescription}"></p>
+					<a th:href="@{/blog/{slug}(slug=${entry.slug})}" class="btn btn-primary">Read</a>
 				</div>
 			</div>
 		</div>
-	</section>
+	</div>
 </div>
 
 </body>

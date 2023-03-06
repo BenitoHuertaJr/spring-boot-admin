@@ -3,25 +3,37 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
-  <title>Welcome to Our Site</title>
+  <title th:text="${entry.name}"></title>
 </head>
 <body>
 
 <div layout:fragment="content">
-  <section class="my-5">
+
+  <div id="main" th:data-background="${entry.image}" th:style="'width: 100vw; height: 100vh; background: url(/uploads/entries/' + ${entry.image} + ') center center / cover no-repeat fixed;'">
+    <div class="landing-text">
+      <h1 th:text="${entry.name}"></h1>
+      <h3></h3>
+    </div>
+  </div>
+  <div id="blog" class="padding">
     <div class="container">
-      <div class="row">
-        <div class="col-md-4 col-sm-12">
-          <img th:src="@{/uploads/entries/{image}(image=${entry.image})}" class="img-fluid">
-          <p th:text="'Written by:' + ${entry.user.name}"></p>
+      <div class="row mb-3">
+        <div class="row">
+          <div class="col-md-12 pl-5">
+            <h4>
+              <i class="fa fa-user"></i> Written by <span th:text="${entry.user.name}"></span>
+            </h4>
+          </div>
         </div>
-        <div class="col-md-8 col-sm-12">
-          <h1 th:text="${entry.name}"></h1>
+      </div>
+      <div class="row">
+        <div class="col-md-12 pl-5">
+          <h1 th:text="${entry.name}"></h1><br>
           <p th:text="${entry.description}"></p>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </div>
 
 </body>

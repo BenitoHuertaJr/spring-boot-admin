@@ -6,9 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">Admin Panel</title>
 
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/assets/images/icon.png}">
+    <link rel="apple-touch-icon" sizes="180x180" th:href="@{/assets/images/icon.png}">
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         body {
             background: #fafafa
@@ -80,6 +83,7 @@
         
         #sidebar ul li a {
             padding: 10px;
+            padding-left: 30px;
             font-size: 1.1em;
             display: block
         }
@@ -144,6 +148,10 @@
         .error-field {
             color: red;
         }
+
+        .bg-primary {
+            background: #036280 !important;
+        }
     </style>
 </head>
 
@@ -154,8 +162,18 @@
                 <h3>Admin Panel</h3>
                 <hr> </div>
             <ul class="list-unstyled components">
-                <li sec:authorize="hasAnyAuthority('ADMIN')" > <a th:href="@{/users}">Users</a> </li>
-                <li sec:authorize="hasAnyAuthority('USER', 'ADMIN')"> <a th:href="@{/entries}">Entries</a> </li>
+                <li sec:authorize="hasAnyAuthority('ADMIN')" >
+                    <a th:href="@{/users}">
+                        <i class="fa fa-users"></i>
+                        Users
+                    </a>
+                </li>
+                <li sec:authorize="hasAnyAuthority('USER', 'ADMIN')">
+                    <a th:href="@{/entries}">
+                        <i class="fa fa-edit"></i>
+                        Entries
+                    </a>
+                </li>
             </ul>
         </nav>
         <div class="container p-0">
