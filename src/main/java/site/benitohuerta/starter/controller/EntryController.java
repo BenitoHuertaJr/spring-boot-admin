@@ -104,20 +104,24 @@ public class EntryController {
                          BindingResult bindingResult)
     {
         entryValidator.validate(entryDetails, bindingResult);
-        entryValidator.validateFile(file, bindingResult);
+
+        if(!file.isEmpty() || file.getSize() != 0) {
+            entryValidator.validateFile(file, bindingResult);
+        }
 
         if (bindingResult.hasErrors()) {
             return "admin/entries/edit";
         }
+        if(!file.isEmpty() || file.getSize() != 0) {
+            try {
+                String fileName = storageService.save(file, "entries");
+                entryDetails.setImage(fileName);
 
-        try {
-            String fileName = storageService.save(file, "entries");
-            entryDetails.setImage(fileName);
-
-        } catch (Exception e) {
-            String error = "Could not upload the file: " + file.getOriginalFilename() + ". Error: " + e.getMessage();
-            redirectAttributes.addAttribute("error", error);
-            return "admin/entries/edit";
+            } catch (Exception e) {
+                String error = "Could not upload the file: " + file.getOriginalFilename() + ". Error: " + e.getMessage();
+                redirectAttributes.addAttribute("error", error);
+                return "admin/entries/edit";
+            }
         }
 
         entryService.update(id, entryDetails);

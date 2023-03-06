@@ -21,7 +21,7 @@ public class EntryServiceImpl implements EntryService {
     public void save(Entry entry) {
 
         entry.setSlug(Slug.makeSlug(entry.getName()));
-        entry.setShortDescription(StringUtils.abbreviate(entry.getDescription(), 20));
+        entry.setShortDescription(StringUtils.abbreviate(entry.getDescription(), 250));
 
         entryRepository.save(entry);
     }
@@ -46,7 +46,7 @@ public class EntryServiceImpl implements EntryService {
         entry.setName(entryDetails.getName());
         entry.setSlug(Slug.makeSlug(entry.getName()));
         entry.setDescription(entryDetails.getDescription());
-        entry.setShortDescription(StringUtils.abbreviate(entry.getDescription(), 100));
+        entry.setShortDescription(StringUtils.abbreviate(entry.getDescription(), 250));
 
         return entryRepository.save(entry);
     }

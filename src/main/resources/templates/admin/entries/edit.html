@@ -22,7 +22,7 @@
           <p th:if="${error != null && error != ''}" th:text="${error}" class="alert alert-danger"></p>
           <form th:object="${entry}" th:action="@{/entries/{id}(id=${entry.id})}" th:method="put" enctype="multipart/form-data">
             <div class="form-group">
-              <label for="name">Name</label>
+              <label for="name">Title</label>
               <input th:field="*{name}" type="text" class="form-control" id="name" placeholder="Enter the name">
               <span th:if="${#fields.hasErrors('name')}" class="error-field" th:errors="*{name}">Name Error</span>
             </div>
